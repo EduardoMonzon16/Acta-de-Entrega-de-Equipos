@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Acta de Entrega de Equipos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <h1 class="header-title mt-5">ACTA DE ENTREGA DE EQUIPOS DE CÓMPUTO</h1>
+
+    <form method="POST" action="/">
+        <!-- DATOS DEL COLABORADOR -->
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Datos del Colaborador</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="correo" class="form-label">Correo:</label>
+                    <input type="email" id="correo" name="correo" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="cargo" class="form-label">Cargo:</label>
+                    <input type="text" id="cargo" name="cargo" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="usuario" class="form-label">Usuario de red:</label>
+                    <input type="text" id="usuario" name="usuario" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="telefono" class="form-label">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" class="form-control" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Hardware</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="tipo" class="form-label">Tipo:</label>
+                    <input type="text" id="tipo" name="tipo" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="marca" class="form-label">Marca:</label>
+                    <input type="text" id="marca" name="marca" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="modelo" class="form-label">Modelo:</label>
+                    <input type="text" id="modelo" name="modelo" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="serial" class="form-label">Serial:</label>
+                    <input type="text" id="serial" name="serial" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="procesador" class="form-label">Procesador:</label>
+                    <input type="text" id="procesador" name="procesador" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="ram" class="form-label">Memoria RAM (GB):</label>
+                    <input type="text" id="ram" name="ram" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="disco" class="form-label">Disco (GB):</label>
+                    <input type="text" id="disco" name="disco" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="perifericos" class="form-label">Periféricos:</label>
+                    <input type="text" id="perifericos" name="perifericos" class="form-control" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- ENTREGA DE EQUIPO -->
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Entrega de Equipo</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="nombre_recibe" class="form-label">Nombre quien recibe:</label>
+                    <input type="text" id="nombre_recibe" name="nombre_recibe" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="fecha_recibe" class="form-label">Fecha de recepción:</label>
+                    <input type="date" id="fecha_recibe" name="fecha_recibe" class="form-control" value="{{ fecha_actual }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="nombre_entrega" class="form-label">Nombre quien entrega:</label>
+                    <input type="text" id="nombre_entrega" name="nombre_entrega" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="fecha_entrega" class="form-label">Fecha de entrega:</label>
+                    <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" value="{{ fecha_actual }}" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- DATOS DEL EQUIPO -->
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Datos del Equipo</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="fecha_compra" class="form-label">Fecha de compra:</label>
+                    <input type="date" id="fecha_compra" name="fecha_compra" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="equipo" class="form-label">Equipo:</label>
+                    <input type="text" id="equipo" name="equipo" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="marca_equipo" class="form-label">Marca:</label>
+                    <input type="text" id="marca_equipo" name="marca_equipo" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="hostname" class="form-label">Hostname:</label>
+                    <input type="text" id="hostname" name="hostname" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="modelo_equipo" class="form-label">Modelo:</label>
+                    <input type="text" id="modelo_equipo" name="modelo_equipo" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="detalle" class="form-label">Detalle:</label>
+                    <input type="text" id="detalle" name="detalle" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="serie_equipo" class="form-label">N° Serie:</label>
+                    <input type="text" id="serie_equipo" name="serie_equipo" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="os" class="form-label">OS:</label>
+                    <input type="text" id="os" name="os" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="garantia" class="form-label">Garantía:</label>
+                    <input type="text" id="garantia" name="garantia" class="form-control">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- HISTORIAL DE USUARIOS -->
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Historial de Usuarios</legend>
+
+            <table id="historialTable" class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Usuario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="date" name="historial_inicio[]" class="form-control form-control-sm" required></td>
+                        <td><input type="date" name="historial_fin[]" class="form-control form-control-sm" required></td>
+                        <td><input type="text" name="historial_usuario[]" class="form-control form-control-sm" required></td>
+                        <td class="text-center align-middle">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary btn-sm" onclick="addRow()">Agregar fila</button>
+        </fieldset>
+
+        <!-- HISTORIAL DE EVENTOS -->
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Historial de Eventos</legend>
+
+            <table id="eventosTable" class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="date" name="evento_fecha[]" class="form-control form-control-sm" required></td>
+                        <td><input type="text" name="evento_observaciones[]" class="form-control form-control-sm" required></td>
+                        <td class="text-center align-middle">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEventoRow(this)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary btn-sm" onclick="addEventoRow()">Agregar fila</button>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Mantenimiento de Hardware</legend>
+
+            <table class="table table-bordered table-striped" style="width:100%; border-collapse: collapse;">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ACTIVIDADES</th>
+                        <th>SI / NO</th>
+                        <th>DETALLES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in [
+                        ('¿El equipo presenta daños físicos?', 'danos_fisicos'),
+                        ('¿El teclado funciona correctamente?', 'teclado'),
+                        ('¿El ratón/trackpad funciona correctamente?', 'raton'),
+                        ('¿El cargador se encuentra en buen estado?', 'cargador'),
+                        ('¿Los puertos funcionan correctamente?', 'puertos'),
+                        ('¿La cámara funciona correctamente?', 'camara'),
+                        ('¿El micrófono funciona correctamente?', 'microfono'),
+                        ('¿El equipo recibió limpieza interna?', 'limpieza_interna'),
+                        ('¿El equipo recibió limpieza externa?', 'limpieza_externa'),
+                        ('¿Los parlantes funcionan correctamente?', 'parlantes'),
+                        ('¿La pantalla funciona correctamente?', 'pantalla'),
+                        ('¿La batería funciona correctamente?', 'bateria'),
+                        ('¿La tarjeta ethernet funciona correctamente?', 'ethernet'),
+                        ('¿El Bluetooth funciona correctamente?', 'bluetooth'),
+                        ('¿La tarjeta wifi funciona correctamente?', 'wifi')
+                    ] %}
+                    <tr>
+                        <td>{{ item[0] }}</td>
+                        <td>
+                            <select name="{{ item[1] }}_sn" class="form-select form-select-sm" required>
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="{{ item[1] }}_detalle" class="form-control form-control-sm">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend class="fw-bold text-center">Mantenimiento de Software</legend>
+
+            <table class="table table-bordered table-striped" style="width:100%; border-collapse: collapse;">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ACTIVIDADES</th>
+                        <th>SI / NO</th>
+                        <th>DETALLES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in [
+                        ("¿Se verificaron los programas vigentes?", "programas_vigentes"),
+                        ("¿Se eliminaron los programas externos?", "programas_externos"),
+                        ("¿Se realizó la limpieza de archivos temporales?", "limpieza_temporal"),
+                        ("¿Se eliminaron los perfiles antiguos?", "perfiles_antiguos"),
+                        ("¿Se realizaron actualizaciones de Windows?", "actualizaciones_windows"),
+                        ("¿Se comprobó el estado del disco duro?", "estado_disco"),
+                        ("¿Se realizo el backup del usuario anterior?", "backup_usuario"),
+                        ("¿Se realizó desfragmentación del disco duro?", "desfragmentacion")
+                    ] %}
+                    <tr>
+                        <td>{{ item[0] }}</td>
+                        <td>
+                            <select name="{{ item[1] }}_sn" class="form-select form-select-sm" required>
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="{{ item[1] }}_detalle" class="form-control form-control-sm">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+
+
+        <button type="submit" class="btn btn-primary w-100" style="height: 50px;">Generar Acta</button>        
+    </form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+
+    function addRow() {
+        const table = document.getElementById('historialTable').getElementsByTagName('tbody')[0];
+        const newRow = document.createElement('tr');
+
+        newRow.innerHTML = `
+            <td><input type="date" name="historial_inicio[]" required></td>
+            <td><input type="date" name="historial_fin[]" required></td>
+            <td><input type="text" name="historial_usuario[]" required></td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
+
+            </td>
+        `;
+
+        table.appendChild(newRow);
+    }
+
+    function removeRow(button) {
+        const row = button.closest('tr');
+        const tbody = row.parentNode;
+        if (tbody.rows.length > 1) {
+            tbody.removeChild(row);
+        } else {
+            alert('Debe haber al menos una fila en el historial.');
+        }
+    }
+
+    function addEventoRow() {
+        const table = document.getElementById('eventosTable').getElementsByTagName('tbody')[0];
+        const newRow = document.createElement('tr');
+
+        newRow.innerHTML = `
+            <td><input type="date" name="evento_fecha[]" required></td>
+            <td><input type="text" name="evento_observaciones[]" required></td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
+            </td>
+        `;
+
+        table.appendChild(newRow);
+    }
+
+    function removeEventoRow(button) {
+        const row = button.closest('tr');
+        const tbody = row.parentNode;
+        if (tbody.rows.length > 1) {
+            tbody.removeChild(row);
+        } else {
+            alert('Debe haber al menos una fila en el historial de eventos.');
+        }
+    }
+</script>
+
+</body>
+</html>
+

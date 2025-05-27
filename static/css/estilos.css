@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f9f9f9;
+}
+
+.header-title {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+fieldset {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 0 10px;
+    color: #222;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    color: #555;
+}
+
+textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 6px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 70px;
+}
