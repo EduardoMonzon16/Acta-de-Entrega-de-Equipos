@@ -169,6 +169,15 @@ def formulario():
             ("¿Se realizó desfragmentación del disco duro?", "desfragmentacion"),
         ]
 
+        # Lista de programas del usuario
+        programas_por_columna = [
+            ["Anydesk", "Office 365", "Cisco VPN", "PDF24", "Microsoft Teams", "Microsoft Defender", "Acrobat Reader"],
+            ["Atlas", "Auditsoft", "---", "---", "---", "---", "---"],
+            ["Concar", "Starsoft", "PDT", "PLAME", "---", "---", "---"],
+            ["Impresoras", "Scanners", "---", "---", "---", "---", "---"],
+            ["PDT", "PLAME", "PLE", "Renta Anual", "Mis declaraciones", "PDB", "---"]
+        ]
+
         mantenimiento_data = {}
         for campo in mantenimiento_campos:
             estado_str = request.form.get(f"{campo}_sn", "false")
@@ -646,13 +655,7 @@ def formulario():
             sombrear_celda(celda)
             aplicar_fuente_celda(celda)
 
-        programas_por_columna = [
-            ["Anydesk", "Office 365", "Cisco VPN", "PDF24", "Microsoft Teams", "Microsoft Defender", "Acrobat Reader"],
-            ["Atlas", "Auditsoft", "---", "---", "---", "---", "---"],
-            ["Concar", "Starsoft", "PDT", "PLAME", "---", "---", "---"],
-            ["Impresoras", "Scanners", "---", "---", "---", "---", "---"],
-            ["PDT", "PLAME", "PLE", "Renta Anual", "Mis declaraciones", "PDB", "---"]
-        ]
+        
 
         # Iteramos por columnas y filas, llenando la tabla
         for col_idx, programas in enumerate(programas_por_columna):
