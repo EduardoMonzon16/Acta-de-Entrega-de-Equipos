@@ -285,17 +285,18 @@
         <button type="submit" class="btn btn-primary w-100" style="height: 50px;">Generar Acta</button>        
     </form>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
     function addRow() {
         const table = document.getElementById('historialTable').getElementsByTagName('tbody')[0];
         const newRow = document.createElement('tr');
 
         newRow.innerHTML = `
-            <td><input type="date" name="historial_inicio[]" required></td>
-            <td><input type="date" name="historial_fin[]" required></td>
-            <td><input type="text" name="historial_usuario[]" required></td>
-            <td>
+            <td><input type="date" name="historial_inicio[]" class="form-control form-control-sm" required></td>
+            <td><input type="date" name="historial_fin[]" class="form-control form-control-sm" required></td>
+            <td><input type="text" name="historial_usuario[]" class="form-control form-control-sm" required></td>
+            <td class="text-center align-middle">
                 <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
 
             </td>
@@ -319,9 +320,9 @@
         const newRow = document.createElement('tr');
 
         newRow.innerHTML = `
-            <td><input type="date" name="evento_fecha[]" required></td>
-            <td><input type="text" name="evento_observaciones[]" required></td>
-            <td>
+            <td><input type="date" name="evento_fecha[]" class="form-control form-control-sm" required></td>
+            <td><input type="text" name="evento_observaciones[]" class="form-control form-control-sm" required></td>
+            <td class="text-center align-middle">
                 <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
             </td>
         `;
