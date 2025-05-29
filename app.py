@@ -421,10 +421,13 @@ def formulario():
                 except (ValueError, TypeError):
                     fi_formateada = fi
                 # Agregar formato 'dd-mm-aaaa' en fecha-fin
-                try:
-                    ff_formateada = datetime.strptime(ff, "%Y-%m-%d").strftime("%d-%m-%Y")
-                except (ValueError, TypeError):
-                    ff_formateada = ff
+                if ff == "ACTUAL":
+                    ff_formateada = "ACTUAL"
+                else:
+                    try:
+                        ff_formateada = datetime.strptime(ff, "%Y-%m-%d").strftime("%d-%m-%Y")
+                    except (ValueError, TypeError):
+                        ff_formateada = ff
 
                 fila = tabla_historial.add_row().cells
                 fila[0].text = fi_formateada

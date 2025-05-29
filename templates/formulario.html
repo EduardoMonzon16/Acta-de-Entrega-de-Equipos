@@ -155,20 +155,23 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id="historialBody">
+                    <!-- Fila fija ACTUAL -->
+                    <tr id="filaActual">
                         <td><input type="date" name="historial_inicio[]" class="form-control form-control-sm" required></td>
-                        <td><input type="date" name="historial_fin[]" class="form-control form-control-sm" required></td>
-                        <td><input type="text" name="historial_usuario[]" class="form-control form-control-sm" required></td>
-                        <td class="text-center align-middle">
-                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
+                        <td>
+                            <input type="text" value="ACTUAL" class="form-control form-control-sm bg-light" readonly>
+                            <input type="hidden" name="historial_fin[]" value="ACTUAL">
                         </td>
+                        <td><input type="text" name="historial_usuario[]" class="form-control form-control-sm" required></td>
+                        <td class="text-center align-middle"><span class="text-muted">—</span></td>
                     </tr>
                 </tbody>
             </table>
 
             <button type="button" class="btn btn-primary btn-sm" onclick="addRow()">Agregar fila</button>
         </fieldset>
+
 
         <!-- HISTORIAL DE EVENTOS -->
         <fieldset class="mb-4">
@@ -289,30 +292,26 @@
 
 <script>
     function addRow() {
-        const table = document.getElementById('historialTable').getElementsByTagName('tbody')[0];
-        const newRow = document.createElement('tr');
+        const tbody = document.getElementById("historialBody");
+        const actualRow = document.getElementById("filaActual");
 
+        const newRow = document.createElement("tr");
         newRow.innerHTML = `
             <td><input type="date" name="historial_inicio[]" class="form-control form-control-sm" required></td>
             <td><input type="date" name="historial_fin[]" class="form-control form-control-sm" required></td>
             <td><input type="text" name="historial_usuario[]" class="form-control form-control-sm" required></td>
             <td class="text-center align-middle">
                 <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
-
             </td>
         `;
 
-        table.appendChild(newRow);
+        // Insertar antes de la fila ACTUAL
+        tbody.insertBefore(newRow, actualRow);
     }
 
     function removeRow(button) {
-        const row = button.closest('tr');
-        const tbody = row.parentNode;
-        if (tbody.rows.length > 1) {
-            tbody.removeChild(row);
-        } else {
-            alert('Debe haber al menos una fila en el historial.');
-        }
+        const row = button.closest("tr");
+        row.remove();
     }
 
     function addEventoRow() {
