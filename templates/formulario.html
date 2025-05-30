@@ -186,13 +186,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="date" name="evento_fecha[]" class="form-control form-control-sm" required></td>
-                        <td><input type="text" name="evento_observaciones[]" class="form-control form-control-sm" required></td>
-                        <td class="text-center align-middle">
-                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEventoRow(this)">Eliminar</button>
-                        </td>
-                    </tr>
+                    <!-- Comienza vacío -->
                 </tbody>
             </table>
 
@@ -315,28 +309,22 @@
     }
 
     function addEventoRow() {
-        const table = document.getElementById('eventosTable').getElementsByTagName('tbody')[0];
-        const newRow = document.createElement('tr');
+        const table = document.getElementById("eventosTable").getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
 
-        newRow.innerHTML = `
-            <td><input type="date" name="evento_fecha[]" class="form-control form-control-sm" required></td>
-            <td><input type="text" name="evento_observaciones[]" class="form-control form-control-sm" required></td>
-            <td class="text-center align-middle">
-                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Eliminar</button>
-            </td>
-        `;
+        const cellFecha = newRow.insertCell(0);
+        const cellObservaciones = newRow.insertCell(1);
+        const cellAcciones = newRow.insertCell(2);
 
-        table.appendChild(newRow);
+        cellFecha.innerHTML = `<input type="date" name="evento_fecha[]" class="form-control form-control-sm" required>`;
+        cellObservaciones.innerHTML = `<input type="text" name="evento_observaciones[]" class="form-control form-control-sm" required>`;
+        cellAcciones.innerHTML = `<button type="button" class="btn btn-danger btn-sm" onclick="removeEventoRow(this)">Eliminar</button>`;
+        cellAcciones.classList.add('text-center', 'align-middle');
     }
 
     function removeEventoRow(button) {
-        const row = button.closest('tr');
-        const tbody = row.parentNode;
-        if (tbody.rows.length > 1) {
-            tbody.removeChild(row);
-        } else {
-            alert('Debe haber al menos una fila en el historial de eventos.');
-        }
+        const row = button.closest("tr");
+        row.remove();
     }
 </script>
 

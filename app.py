@@ -6,7 +6,9 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from datetime import datetime
+from io import BytesIO
 import os
+
 
 app = Flask(__name__)
 
@@ -74,10 +76,33 @@ def formulario():
         evento_fechas = request.form.getlist('evento_fecha[]')
         evento_observaciones = request.form.getlist('evento_observaciones[]')
 
+        # Agregar formato 'dd-mm-aaaa' en fecha-compra
+        try:
+            fecha_compra_formateada = datetime.strptime(fecha_compra, "%Y-%m-%d").strftime("%d-%m-%Y")
+        except (ValueError, TypeError):
+            fecha_compra_formateada = fecha_compra
+
+        # Agregar formato 'dd-mm-aaaa' en garantia
+        try:
+            garantia_formateada = datetime.strptime(garantia_raw, "%Y-%m-%d").strftime("%d-%m-%Y")
+        except (ValueError, TypeError):
+            garantia_formateada = garantia_raw or ""
+
+        # Agregar formato 'dd-mm-aaaa' en fecha-recibe
+        try:
+            fecha_recibe_formateada = datetime.strptime(fecha_recibe, "%Y-%m-%d").strftime("%d-%m-%Y")
+        except (ValueError, TypeError):
+            fecha_recibe_formateada = fecha_recibe
+
+        # Agregar formato 'dd-mm-aaaa' en fecha-entrega
+        try:
+            fecha_entrega_formateada = datetime.strptime(fecha_entrega, "%Y-%m-%d").strftime("%d-%m-%Y")
+        except (ValueError, TypeError):
+            fecha_entrega_formateada = fecha_entrega
+
         # Crea un nombre único para el documento con el nombre y la fecha/hora
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         nombre_archivo = f"Acta_Entrega_{nombre.replace(' ', '_')}_{timestamp}.docx"
-        ruta_doc = os.path.join("archivos_generados", nombre_archivo)
 
         # Mantenimiento de hardware
         mantenimiento_campos = [
@@ -117,19 +142,6 @@ def formulario():
             "y con los mismos accesorios que me fue entregado, cuando se me programe algún cambio de equipo o el "
             "vínculo laboral haya culminado."
         )
-
-
-        # Agregar formato 'dd-mm-aaaa' en fecha-compra
-        try:
-            fecha_compra_formateada = datetime.strptime(fecha_compra, "%Y-%m-%d").strftime("%d-%m-%Y")
-        except (ValueError, TypeError):
-            fecha_compra_formateada = fecha_compra
-
-        # Agregar formato 'dd-mm-aaaa' en garantia
-        try:
-            garantia_formateada = datetime.strptime(garantia_raw, "%Y-%m-%d").strftime("%d-%m-%Y")
-        except (ValueError, TypeError):
-            garantia_formateada = garantia_raw or ""
 
         # Datos del equipo
         datos_equipo = {
@@ -197,7 +209,7 @@ def formulario():
 
         doc = Document()
 
-        # Encabezado con logo
+        # Encabezado con logo Forvis Mazars
         section = doc.sections[0]
         header = section.header
         for p in header.paragraphs:
@@ -310,18 +322,6 @@ def formulario():
         doc.add_paragraph("")
 
         # ENTREGA DE EQUIPO
-        # Agregar formato 'dd-mm-aaaa' en fecha-recibe
-        try:
-            fecha_recibe_formateada = datetime.strptime(fecha_recibe, "%Y-%m-%d").strftime("%d-%m-%Y")
-        except (ValueError, TypeError):
-            fecha_recibe_formateada = fecha_recibe
-
-        # Agregar formato 'dd-mm-aaaa' en fecha-entrega
-        try:
-            fecha_entrega_formateada = datetime.strptime(fecha_entrega, "%Y-%m-%d").strftime("%d-%m-%Y")
-        except (ValueError, TypeError):
-            fecha_entrega_formateada = fecha_entrega
-
         tabla_firma = doc.add_table(rows=5, cols=2)
         tabla_firma.style = 'Table Grid'
         tabla_firma.allow_autofit = False
@@ -573,7 +573,6 @@ def formulario():
         celda_titulo.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         run = celda_titulo.runs[0] if celda_titulo.runs else celda_titulo.add_run()
         run.bold = True
-
         sombrear_celda(tabla_software.cell(0, 0))
         aplicar_fuente_celda(tabla_software.cell(0, 0))
 
@@ -589,8 +588,6 @@ def formulario():
             celda.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
             run = celda.paragraphs[0].runs[0]
             run.bold = True
-
-        
 
         for i, (pregunta, clave) in enumerate(preguntas_software, start=2):
             tabla_software.cell(i, 0).text = pregunta
@@ -664,8 +661,6 @@ def formulario():
             sombrear_celda(celda)
             aplicar_fuente_celda(celda)
 
-        
-
         # Iteramos por columnas y filas, llenando la tabla
         for col_idx, programas in enumerate(programas_por_columna):
             for row_offset, programa in enumerate(programas, start=2):  # filas 2 a 8
@@ -677,10 +672,18 @@ def formulario():
                 run.font.name = "Calibri"
                 run.font.size = Pt(11)
 
-                os.makedirs("archivos_generados", exist_ok=True)
-                doc.save(ruta_doc)
+        # Guardamos el docx en memoria
+        file_stream = BytesIO()
+        doc.save(file_stream)
+        file_stream.seek(0)  # Volver al inicio del archivo en memoria
 
-        return send_file(ruta_doc, as_attachment=True)
+        # Enviar el archivo para descarga
+        return send_file(
+            file_stream,
+            as_attachment=True,
+            download_name=nombre_archivo,
+            mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        )
 
     return render_template('formulario.html', fecha_actual=fecha_actual)
 
