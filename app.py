@@ -63,7 +63,7 @@ def formulario():
         detalle = request.form.get('detalle', '')
         serie_equipo = request.form.get('serie_equipo', '')
         os_equipo = request.form.get('os', '')
-        garantia = request.form.get('garantia', '')
+        garantia_raw = request.form.get('garantia', '')
 
         # Historial de usuarios (listas)
         historial_inicio = request.form.getlist('historial_inicio[]')
@@ -125,6 +125,12 @@ def formulario():
         except (ValueError, TypeError):
             fecha_compra_formateada = fecha_compra
 
+        # Agregar formato 'dd-mm-aaaa' en garantia
+        try:
+            garantia_formateada = datetime.strptime(garantia_raw, "%Y-%m-%d").strftime("%d-%m-%Y")
+        except (ValueError, TypeError):
+            garantia_formateada = garantia_raw or ""
+
         # Datos del equipo
         datos_equipo = {
             "Fecha de compra:": fecha_compra_formateada,
@@ -135,7 +141,7 @@ def formulario():
             "Detalle:": detalle,
             "Serie:": serie_equipo,
             "Sistema Operativo:": os_equipo,
-            "Garantía:": garantia,
+            "Garantía:": garantia_formateada,
         }
 
         # Preguntas para mantenimiento de hardware
