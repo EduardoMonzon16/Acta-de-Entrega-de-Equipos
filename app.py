@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for, session, flash
 from docx import Document
 from docx.shared import Inches, Pt, Cm
 from docx.enum.table import WD_ALIGN_VERTICAL
@@ -11,6 +11,7 @@ import os
 
 
 app = Flask(__name__)
+app.secret_key = 'clave_secreta_segura'
 
 # Aplica color de fondo a una celda
 def sombrear_celda(celda, color_hex="D9D9D9"):
@@ -28,8 +29,35 @@ def aplicar_fuente_celda(celda, fuente="Calibri", tam=11):
             run.font.size = Pt(tam)
             run._element.rPr.rFonts.set(qn('w:eastAsia'), fuente)
 
+# Usuario de ejemplo (puedes reemplazar con base de datos)
+USUARIOS = {
+    'admin': '1234'
+}
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        password = request.form['password']
+
+        if USUARIOS.get(usuario) == password:
+            session['usuario'] = usuario
+            return redirect(url_for('formulario'))
+        else:
+            flash('Usuario o contraseña incorrectos', 'error')
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
 @app.route('/', methods=['GET', 'POST'])
 def formulario():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    
     fecha_actual = datetime.today().strftime('%Y-%m-%d')
 
     if request.method == 'POST':
