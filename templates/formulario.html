@@ -343,38 +343,37 @@
     document.addEventListener("DOMContentLoaded", function () {
         const correoInput = document.getElementById("correo");
         const usuarioInput = document.getElementById("usuario");
-
-        correoInput.addEventListener("input", function () {
-            usuarioInput.value = correoInput.value.trim();
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
         const telefonoInput = document.getElementById("telefono");
-
-        telefonoInput.addEventListener("input", function () {
-            let value = this.value.replace(/\D/g, ''); // Eliminar todo lo que no sea número
-
-            if (value.length > 9) {
-                value = value.substring(0, 9); // Limitar a 9 dígitos
-            }
-
-            // Formato: 999 999 999
-            let formatted = value.replace(/(\d{3})(\d{3})(\d{0,3})/, function (_, p1, p2, p3) {
-                return [p1, p2, p3].filter(Boolean).join(' ');
-            });
-
-            this.value = formatted;
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
         const nombreInput = document.getElementById("nombre");
         const nombreRecibeInput = document.getElementById("nombre_recibe");
 
-        nombreInput.addEventListener("input", function () {
-            nombreRecibeInput.value = nombreInput.value.trim();
-        });
+        if (correoInput && usuarioInput) {
+            correoInput.addEventListener("input", function () {
+                usuarioInput.value = correoInput.value.trim();
+            });
+        }
+
+        if (telefonoInput) {
+            telefonoInput.addEventListener("input", function () {
+                let value = this.value.replace(/\D/g, ''); // Eliminar no números
+
+                if (value.length > 9) {
+                    value = value.substring(0, 9);
+                }
+
+                let formatted = value.replace(/(\d{3})(\d{3})(\d{0,3})/, function (_, p1, p2, p3) {
+                    return [p1, p2, p3].filter(Boolean).join(' ');
+                });
+
+                this.value = formatted;
+            });
+        }
+
+        if (nombreInput && nombreRecibeInput) {
+            nombreInput.addEventListener("input", function () {
+                nombreRecibeInput.value = nombreInput.value.trim();
+            });
+        }
     });
 </script>
 
