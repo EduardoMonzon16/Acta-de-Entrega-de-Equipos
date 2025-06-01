@@ -63,7 +63,8 @@ def formulario():
     if request.method == 'POST':
         # Datos personales
         nombre = request.form['nombre']
-        correo = request.form['correo']
+        correo_usuario = request.form['correo'].strip()  
+        correo = f"{correo_usuario}@forvismazars.com"
         cargo = request.form['cargo']
         usuario = request.form['usuario']
         telefono = request.form['telefono']
