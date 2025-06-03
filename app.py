@@ -37,7 +37,7 @@ def validar_credenciales(usuario, password):
 
         if resultado:
             contraseña_en_bd = resultado[0]
-            return contraseña_en_bd == password  # Comparación directa (o usar hash aquí)
+            return contraseña_en_bd == password 
         else:
             return False
     except Error as e:
@@ -68,7 +68,7 @@ def login():
 
         if validar_credenciales(usuario, password):
             session['usuario'] = usuario
-            return redirect(url_for('formulario'))  # Cambia esto si tu ruta es diferente
+            return redirect(url_for('formulario'))
         else:
             flash('Usuario o contraseña incorrectos', 'error')
 
@@ -498,9 +498,9 @@ def formulario():
                     aplicar_fuente_celda(celda)
                 filas_agregadas += 1
 
-        # Agrega filas vacías a la tabla de historial para asegurar que tenga 8 filas en total (título, encabezado y 6 de datos)
-        total_filas_deseadas = 8  # 1 título + 1 encabezado + 6 filas datos
-        filas_existentes = filas_agregadas + 2  # filas agregadas + filas título+encabezado
+        # Agrega filas vacías a la tabla de historial para asegurar que tenga 8 filas en total
+        total_filas_deseadas = 8  
+        filas_existentes = filas_agregadas + 2  
         filas_faltantes = total_filas_deseadas - filas_existentes
         for _ in range(filas_faltantes):
             fila = tabla_historial.add_row().cells
@@ -538,7 +538,7 @@ def formulario():
         # Fila 2 - : Datos del historial de eventos
         filas_evento_agregadas = 0
         for fecha, obs in zip(evento_fechas, evento_observaciones):
-            if obs.strip():  # solo si hay observaciones
+            if obs.strip():  
                 try:
                     fecha_formateada = datetime.strptime(fecha, "%Y-%m-%d").strftime("%d-%m-%Y")
                 except (ValueError, TypeError):
@@ -551,9 +551,9 @@ def formulario():
                     aplicar_fuente_celda(celda)
                 filas_evento_agregadas += 1
 
-        # Añade filas vacías a la tabla de eventos hasta completar un total de 8 filas visibles (incluyendo encabezado y fila de título)
-        total_filas_eventos_deseadas = 8 # 1 título + 1 encabezado + 6 filas datos
-        filas_eventos_existentes = filas_evento_agregadas + 2 # filas agregadas + filas título+encabezado
+        # Añade filas vacías a la tabla de eventos hasta completar un total de 8 filas visibles
+        total_filas_eventos_deseadas = 8 
+        filas_eventos_existentes = filas_evento_agregadas + 2 
         filas_eventos_faltantes = total_filas_eventos_deseadas - filas_eventos_existentes
         for _ in range(filas_eventos_faltantes):
             fila = tabla_eventos.add_row().cells
@@ -574,7 +574,7 @@ def formulario():
             for row_idx in range(len(tabla_hardware.rows)):
                 tabla_hardware.cell(row_idx, col_idx).width = Cm(ancho)
 
-        # Fila 0: Título
+        # MANTENIMIENTO DE HARDWARE
         tabla_hardware.cell(0, 0).merge(tabla_hardware.cell(0, 2)).text = "MANTENIMIENTO DE HARDWARE"
         celda_titulo = tabla_hardware.cell(0, 0).paragraphs[0]
         celda_titulo.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -583,10 +583,12 @@ def formulario():
         sombrear_celda(tabla_hardware.cell(0, 0))
         aplicar_fuente_celda(tabla_hardware.cell(0, 0))
 
+        # Encabezados
         tabla_hardware.cell(1, 0).text = "ACTIVIDAD"
         tabla_hardware.cell(1, 1).text = "SI / NO"
         tabla_hardware.cell(1, 2).text = "DETALLES"
 
+        # Aplica sombreado, fuente y alineación centrada a las 3 primeras columnas del encabezado.
         for col in range(3):
             celda = tabla_hardware.cell(1, col)
             sombrear_celda(celda)
@@ -595,6 +597,7 @@ def formulario():
             run = celda.paragraphs[0].runs[0]
             run.bold = True
 
+        # Recorre cada par (pregunta, clave)
         for i, (texto_pregunta, clave) in enumerate(preguntas, start=2):
             tabla_hardware.cell(i, 0).text = texto_pregunta
             sombrear_celda(tabla_hardware.cell(i, 0))
@@ -636,6 +639,7 @@ def formulario():
         tabla_software.cell(1, 1).text = "SI / NO"
         tabla_software.cell(1, 2).text = "DETALLES"
 
+        # Aplica sombreado, fuente y alineación centrada a las 3 primeras columnas del encabezado.
         for col in range(3):
             celda = tabla_software.cell(1, col)
             sombrear_celda(celda)
@@ -644,6 +648,7 @@ def formulario():
             run = celda.paragraphs[0].runs[0]
             run.bold = True
 
+        # Recorre cada par (pregunta, clave)
         for i, (pregunta, clave) in enumerate(preguntas_software, start=2):
             tabla_software.cell(i, 0).text = pregunta
             sombrear_celda(tabla_software.cell(i, 0))
@@ -658,23 +663,24 @@ def formulario():
             tabla_software.cell(i, 2).text = detalle
             aplicar_fuente_celda(tabla_software.cell(i, 2))
 
-        doc.add_paragraph()  # Este párrafo en blanco crea un espacio visual
+        doc.add_paragraph()
+
+        # LISTA DE PROGRAMAS POR AREA
         titulo = doc.add_paragraph()
         titulo.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         run = titulo.add_run("LISTA DE PROGRAMAS POR ÁREA")
         run.bold = True
         run.font.size = Pt(12)
 
-        # Establecer fuente Calibri (a veces hay que hacerlo usando el XML directamente)
+        # Aplica sombreado, fuente y alineación
         run.font.name = 'Calibri'
         r = run._element
         r.rPr.rFonts.set(qn('w:eastAsia'), 'Calibri')
-
-        # LISTA DE PROGRAMAS POR ÁREA
         tabla_obs = doc.add_table(rows=9, cols=5)
         tabla_obs.style = 'Table Grid'
         tabla_obs.allow_autofit = False
 
+        # Encabezado Especifico
         celda_esp = tabla_obs.cell(0, 1).merge(tabla_obs.cell(0, 4))
         celda_esp.text = "Específico"
         parrafo = celda_esp.paragraphs[0]
@@ -685,6 +691,8 @@ def formulario():
         run.font.size = Pt(11)
         sombrear_celda(celda_esp)
         aplicar_fuente_celda(celda_esp)
+
+        # Encabezado General (Todos)
         celda_general = tabla_obs.cell(1, 0).merge(tabla_obs.cell(0, 0))
         celda_general.text = "General (Todos)"
         parrafo = celda_general.paragraphs[0]
@@ -697,7 +705,7 @@ def formulario():
         sombrear_celda(celda_general)
         aplicar_fuente_celda(celda_general)
 
-        # Lista de áreas a insertar en la fila 2 (índice 2) desde columna 1 (índice 1) a 4
+        # Lista de áreas para insertar
         areas = ["AUDIT", "AOS", "ADMIN", "TAX & LEGAL"]
 
         for col_idx, area in enumerate(areas, start=1):
