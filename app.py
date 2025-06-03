@@ -7,11 +7,42 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from datetime import datetime
 from io import BytesIO
+from mysql.connector import Error
 import os
+import mysql.connector
+import hashlib 
 
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_segura'
+
+def conectar():
+    return mysql.connector.connect(
+        host='localhost',          # o la IP si está en otra máquina
+        user='root',   # usuario con permisos para acceder a la BD
+        password='Universitario12#',
+        database='systembd'     # nombre de la base de datos
+    )
+
+# Función para validar credenciales
+def validar_credenciales(usuario, password):
+    try:
+        conexion = conectar()
+        cursor = conexion.cursor()
+        sql = "SELECT Contraseña FROM usuarios WHERE Nombre = %s"
+        cursor.execute(sql, (usuario,))
+        resultado = cursor.fetchone()
+        cursor.close()
+        conexion.close()
+
+        if resultado:
+            contraseña_en_bd = resultado[0]
+            return contraseña_en_bd == password  # Comparación directa (o usar hash aquí)
+        else:
+            return False
+    except Error as e:
+        print(f"Error en la conexión: {e}")
+        return False
 
 # Aplica color de fondo a una celda
 def sombrear_celda(celda, color_hex="D9D9D9"):
@@ -29,20 +60,15 @@ def aplicar_fuente_celda(celda, fuente="Calibri", tam=11):
             run.font.size = Pt(tam)
             run._element.rPr.rFonts.set(qn('w:eastAsia'), fuente)
 
-# Usuario de ejemplo (puedes reemplazar con base de datos)
-USUARIOS = {
-    'admin': '1234'
-}
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         usuario = request.form['usuario']
         password = request.form['password']
 
-        if USUARIOS.get(usuario) == password:
+        if validar_credenciales(usuario, password):
             session['usuario'] = usuario
-            return redirect(url_for('formulario'))
+            return redirect(url_for('formulario'))  # Cambia esto si tu ruta es diferente
         else:
             flash('Usuario o contraseña incorrectos', 'error')
 
