@@ -10,7 +10,6 @@ from io import BytesIO
 from mysql.connector import Error
 import os
 import mysql.connector
-import hashlib 
 
 
 app = Flask(__name__)
@@ -18,10 +17,11 @@ app.secret_key = 'clave_secreta_segura'
 
 def conectar():
     return mysql.connector.connect(
-        host='localhost',          # o la IP si está en otra máquina
-        user='root',   # usuario con permisos para acceder a la BD
+        host='localhost',          
+        user='root',   
         password='Universitario12#',
-        database='systembd'     # nombre de la base de datos
+        database='systembd',
+        port=3307 
     )
 
 # Función para validar credenciales
