@@ -92,7 +92,7 @@ def login():
 
         if validar_credenciales(usuario, password):
             session['usuario'] = usuario
-            return redirect(url_for('formulario'))
+            return redirect(url_for('usuarioti'))
         else:
             flash('Usuario o contraseña incorrectos', 'error')
 
@@ -274,7 +274,7 @@ def generar_nombre_archivo(nombre):
 # =============================================================================
 
 @app.route('/', methods=['GET', 'POST'])
-def formulario():
+def usuarioti():
     """Ruta principal que maneja el formulario y genera el documento"""
     # Verificar autenticación
     if 'usuario' not in session:
@@ -334,7 +334,7 @@ def formulario():
             mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
 
-    return render_template('formulario.html', fecha_actual=fecha_actual)
+    return render_template('usuarioti.html', fecha_actual=fecha_actual)
 
 # =============================================================================
 # FUNCIONES DE GENERACIÓN DE DOCUMENTO WORD
