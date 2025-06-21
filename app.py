@@ -82,6 +82,13 @@ def formatear_fecha(fecha_str, formato_origen="%Y-%m-%d", formato_destino="%d-%m
 # =============================================================================
 # RUTAS DE AUTENTICACIÓN
 # =============================================================================
+@app.route('/')
+def index():
+    """Ruta principal que redirige según el estado de autenticación"""
+    if 'usuario' in session:
+        return redirect(url_for('usuarioti'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -92,7 +99,7 @@ def login():
 
         if validar_credenciales(usuario, password):
             session['usuario'] = usuario
-            return redirect(url_for('formulario'))
+            return redirect(url_for('usuarioti'))
         else:
             flash('Usuario o contraseña incorrectos', 'error')
 
@@ -273,8 +280,8 @@ def generar_nombre_archivo(nombre):
 # RUTA PRINCIPAL DEL FORMULARIO
 # =============================================================================
 
-@app.route('/', methods=['GET', 'POST'])
-def formulario():
+@app.route('/usuarioti', methods=['GET', 'POST'])
+def usuarioti():
     """Ruta principal que maneja el formulario y genera el documento"""
     # Verificar autenticación
     if 'usuario' not in session:
@@ -334,7 +341,7 @@ def formulario():
             mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
 
-    return render_template('formulario.html', fecha_actual=fecha_actual)
+    return render_template('usuarioti.html', fecha_actual=fecha_actual)
 
     # =============================================================================
 # FUNCIONES DE GENERACIÓN DE DOCUMENTO WORD
