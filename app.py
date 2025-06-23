@@ -33,24 +33,57 @@ def conectar():
     )
 
 def validar_credenciales(usuario, password):
-    """Valida las credenciales del usuario contra la base de datos"""
+    """Valida las credenciales del usuario contra la base de datos y retorna el tipo de usuario"""
     try:
         conexion = conectar()
         cursor = conexion.cursor()
-        sql = "SELECT Contraseña FROM usuarios WHERE Nombre = %s"
+        # Seleccionar tanto la contraseña como el nombre para determinar el tipo
+        sql = "SELECT Nombre, Contraseña FROM usuarios WHERE Nombre = %s"
         cursor.execute(sql, (usuario,))
         resultado = cursor.fetchone()
         cursor.close()
         conexion.close()
 
         if resultado:
-            contraseña_en_bd = resultado[0]
-            return contraseña_en_bd == password 
+            nombre_en_bd = resultado[0]
+            contraseña_en_bd = resultado[1]
+            
+            # Validar contraseña
+            if contraseña_en_bd == password:
+                # Retornar el tipo de usuario basado en el nombre
+                if nombre_en_bd == "Administrador":
+                    return "administrador"
+                elif nombre_en_bd == "Usuario":
+                    return "usuario"
+                else:
+                    return "usuario"  # Por defecto, cualquier otro usuario es tipo "usuario"
+            else:
+                return False
         else:
             return False
     except Error as e:
         print(f"Error en la conexión: {e}")
         return False
+
+def get_cargos():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+        
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idCargos, NombreCargo FROM cargos ORDER BY NombreCargo")
+        cargos = cursor.fetchall()
+        
+        print(f"Se obtuvieron {len(cargos)} cargos: {cargos}")
+        return cargos
+        
+    except Exception as e:
+        print(f"Error obteniendo cargos: {e}")
+        return []
 
 # =============================================================================
 # FUNCIONES AUXILIARES PARA DOCUMENTOS
@@ -90,8 +123,16 @@ def login():
         usuario = request.form['usuario']
         password = request.form['password']
 
-        if validar_credenciales(usuario, password):
+        # Validar credenciales con la base de datos
+        tipo_usuario = validar_credenciales(usuario, password)
+        
+        if tipo_usuario == "administrador":
             session['usuario'] = usuario
+            session['tipo_usuario'] = 'administrador'
+            return redirect(url_for('administradorti'))
+        elif tipo_usuario == "usuario":
+            session['usuario'] = usuario
+            session['tipo_usuario'] = 'usuario'
             return redirect(url_for('usuarioti'))
         else:
             flash('Usuario o contraseña incorrectos', 'error')
@@ -273,14 +314,34 @@ def generar_nombre_archivo(nombre):
 # RUTA PRINCIPAL DEL FORMULARIO
 # =============================================================================
 
+@app.route('/administradorti')
+def administradorti():
+    """Ruta para el panel de administrador"""
+    # Verificar autenticación y tipo de usuario
+    if 'usuario' not in session or 'tipo_usuario' not in session:
+        return redirect(url_for('login'))
+    
+    if session['tipo_usuario'] != 'administrador':
+        flash('No tienes permisos para acceder a esta página', 'error')
+        return redirect(url_for('login'))
+    
+    return render_template('administradorti.html')
+
 @app.route('/', methods=['GET', 'POST'])
 def usuarioti():
     """Ruta principal que maneja el formulario y genera el documento"""
     # Verificar autenticación
-    if 'usuario' not in session:
+    if 'usuario' not in session or 'tipo_usuario' not in session:
+        return redirect(url_for('login'))
+    
+    # Verificar que sea un usuario válido (tanto administrador como usuario pueden acceder)
+    if session['tipo_usuario'] not in ['administrador', 'usuario']:
+        flash('No tienes permisos para acceder a esta página', 'error')
         return redirect(url_for('login'))
     
     fecha_actual = datetime.today().strftime('%Y-%m-%d')
+    cargos = get_cargos()
+    print(f"Cargos obtenidos: {len(cargos)}")
 
     if request.method == 'POST':
         # Extraer datos del formulario
@@ -334,7 +395,7 @@ def usuarioti():
             mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
 
-    return render_template('usuarioti.html', fecha_actual=fecha_actual)
+    return render_template('usuarioti.html', fecha_actual=fecha_actual, cargos=cargos)
 
 # =============================================================================
 # FUNCIONES DE GENERACIÓN DE DOCUMENTO WORD
