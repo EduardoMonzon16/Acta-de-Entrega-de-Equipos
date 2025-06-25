@@ -51,15 +51,30 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="tipo" class="form-label">Tipo:</label>
-                    <input type="text" id="tipo" name="tipo" class="form-control" required>
+                    <select id="tipo" name="tipo" class="form-select" required>
+                        <option value="">Seleccione un tipo</option>
+                        {% for tipo_equipo in tipos_equipo %}
+                            <option value="{{ tipo_equipo.Tipo }}">{{ tipo_equipo.Tipo }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="marca" class="form-label">Marca:</label>
-                    <input type="text" id="marca" name="marca" class="form-control" required>
+                    <select id="marca" name="marca" class="form-select" required>
+                        <option value="">Seleccione una marca</option>
+                        {% for marca_equipo in marcas_equipo %}
+                            <option value="{{ marca_equipo.Marca }}">{{ marca_equipo.Marca }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="modelo" class="form-label">Modelo:</label>
-                    <input type="text" id="modelo" name="modelo" class="form-control" required>
+                    <select id="modelo" name="modelo" class="form-select" required>
+                        <option value="">Seleccione un modelo</option>
+                        {% for modelo_equipo in modelos_equipo %}
+                            <option value="{{ modelo_equipo.Modelo }}">{{ modelo_equipo.Modelo }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="serial" class="form-label">Serial:</label>
@@ -67,15 +82,30 @@
                 </div>
                 <div class="col-md-6">
                     <label for="procesador" class="form-label">Procesador:</label>
-                    <input type="text" id="procesador" name="procesador" class="form-control" required>
+                    <select id="procesador" name="procesador" class="form-select" required>
+                        <option value="">Seleccione un procesador</option>
+                        {% for procesador_equipo in procesadores_equipo %}
+                            <option value="{{ procesador_equipo.Procesador_Equipo }}">{{ procesador_equipo.Procesador_Equipo }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="ram" class="form-label">Memoria RAM (GB):</label>
-                    <input type="text" id="ram" name="ram" class="form-control" required>
+                    <select id="ram" name="ram" class="form-select" required>
+                        <option value="">Seleccione cantidad de memoria RAM</option>
+                        {% for memoria_ram in memorias_ram %}
+                            <option value="{{ memoria_ram.Memoria_RAM }}">{{ memoria_ram.Memoria_RAM }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="disco" class="form-label">Disco (GB):</label>
-                    <input type="text" id="disco" name="disco" class="form-control" required>
+                    <select id="disco" name="disco" class="form-select" required>
+                        <option value="">Seleccione tamaño de disco</option>
+                        {% for disco_tamaño in discos_tamaño %}
+                            <option value="{{ disco_tamaño.Disco_Tamaño }}">{{ disco_tamaño.Disco_Tamaño }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="perifericos" class="form-label">Periféricos:</label>
@@ -141,7 +171,12 @@
                 </div>
                 <div class="col-md-6">
                     <label for="os" class="form-label">OS:</label>
-                    <input type="text" id="os" name="os" class="form-control">
+                    <select id="os" name="os" class="form-select" required>
+                        <option value="">Seleccione un sistema operativo</option>
+                        {% for sistema_operativo in sistemas_operativo %}
+                            <option value="{{ sistema_operativo.Sistema_Operativo }}">{{ sistema_operativo.Sistema_Operativo }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="garantia" class="form-label">Garantía:</label>

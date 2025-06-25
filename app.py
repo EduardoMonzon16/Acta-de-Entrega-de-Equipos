@@ -84,7 +84,147 @@ def get_cargos():
     except Exception as e:
         print(f"Error obteniendo cargos: {e}")
         return []
+    
+def get_tipos_equipo():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
 
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idTipos_Equipo, Tipo FROM tipos_equipo ORDER BY Tipo")
+        tipos_equipo = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(tipos_equipo)} tipos: {tipos_equipo}")
+        return tipos_equipo
+    
+    except Exception as e:
+        print(f"Error obteniendo tipos_equipo: {e}")
+        return []
+    
+def get_marcas_equipo():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idMarcas_Equipo, Marca FROM marcas_equipo ORDER BY Marca")
+        marcas_equipo = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(marcas_equipo)} tipos: {marcas_equipo}")
+        return marcas_equipo
+    
+    except Exception as e:
+        print(f"Error obteniendo marcas_equipo: {e}")
+        return []
+    
+def get_modelos_equipo():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idModelos_Equipo, Modelo FROM modelos_equipo ORDER BY Modelo")
+        modelos_equipo = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(modelos_equipo)} tipos: {modelos_equipo}")
+        return modelos_equipo
+    
+    except Exception as e:
+        print(f"Error obteniendo modelos_equipo: {e}")
+        return []
+    
+def get_sistemas_operativos():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idSistemas_Operativo, Sistema_Operativo FROM sistemas_operativo ORDER BY Sistema_Operativo")
+        sistemas_operativo = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(sistemas_operativo)} tipos: {sistemas_operativo}")
+        return sistemas_operativo
+    
+    except Exception as e:
+        print(f"Error obteniendo sistemas_operativo: {e}")
+        return []
+    
+def get_procesadores_equipos():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idProcesadores_Equipo, Procesador_Equipo FROM procesadores_equipo ORDER BY Procesador_Equipo")
+        procesadores_equipo = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(procesadores_equipo)} tipos: {procesadores_equipo}")
+        return procesadores_equipo
+    
+    except Exception as e:
+        print(f"Error obteniendo procesadores_equipo: {e}")
+        return []
+    
+def get_memorias_ram():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idMemorias_RAM, Memoria_RAM FROM memorias_ram ORDER BY Memoria_RAM")
+        memorias_ram = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(memorias_ram)} tipos: {memorias_ram}")
+        return memorias_ram
+    
+    except Exception as e:
+        print(f"Error obteniendo memorias_ram: {e}")
+        return []
+    
+def get_discos_tamaño():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+        
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idDiscos_Tamaño, Disco_Tamaño FROM discos_tamaño ORDER BY Disco_Tamaño")
+        discos_tamaño = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(discos_tamaño)} tipos: {discos_tamaño}")
+        return discos_tamaño
+    
+    except Exception as e:
+        print(f"Error obteniendo discos_tamaño: {e}")
+        return []
+        
 # =============================================================================
 # FUNCIONES AUXILIARES PARA DOCUMENTOS
 # =============================================================================
@@ -341,7 +481,22 @@ def usuarioti():
     
     fecha_actual = datetime.today().strftime('%Y-%m-%d')
     cargos = get_cargos()
+    tipos_equipo = get_tipos_equipo()
+    marcas_equipo = get_marcas_equipo()
+    modelos_equipo = get_modelos_equipo()
+    sistemas_operativo = get_sistemas_operativos()
+    procesadores_equipo = get_procesadores_equipos()
+    memorias_ram = get_memorias_ram()
+    discos_tamaño = get_discos_tamaño()
+
     print(f"Cargos obtenidos: {len(cargos)}")
+    print(f"Tipos de equipos obtenidos: {len(tipos_equipo)}")
+    print(f"Marcas de equipos obtenidos: {len(marcas_equipo)}")
+    print(f"Modelos de equipos obtenidos: {len(modelos_equipo)}")
+    print(f"Sistemas operativos obtenidos: {len(sistemas_operativo)}")
+    print(f"Procesadores de equipos obtenidos: {len(procesadores_equipo)}")
+    print(f"Memorias RAM obtenidas: {len(memorias_ram)}")
+    print(f"Tamaño de discos obtenidos: {len(discos_tamaño)}")
 
     if request.method == 'POST':
         # Extraer datos del formulario
@@ -395,7 +550,9 @@ def usuarioti():
             mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
 
-    return render_template('usuarioti.html', fecha_actual=fecha_actual, cargos=cargos)
+    return render_template('usuarioti.html', fecha_actual=fecha_actual, cargos=cargos, tipos_equipo=tipos_equipo, marcas_equipo=marcas_equipo, 
+                           modelos_equipo=modelos_equipo, sistemas_operativo=sistemas_operativo, procesadores_equipo=procesadores_equipo,
+                           memorias_ram=memorias_ram, discos_tamaño=discos_tamaño)
 
 # =============================================================================
 # FUNCIONES DE GENERACIÓN DE DOCUMENTO WORD
