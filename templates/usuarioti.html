@@ -109,7 +109,12 @@
                 </div>
                 <div class="col-md-6">
                     <label for="perifericos" class="form-label">Periféricos:</label>
-                    <input type="text" id="perifericos" name="perifericos" class="form-control" required>
+                    <select id="perifericos" name="perifericos" class="form-select" required>
+                        <option value="">Seleccione periferico</option>
+                        {% for periferico in perifericos %}
+                            <option value="{{ periferico.Periferico }}">{{ periferico.Periferico }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
         </fieldset>
@@ -128,7 +133,12 @@
                 </div>
                 <div class="col-md-6">
                     <label for="nombre_entrega" class="form-label">Nombre quien entrega:</label>
-                    <input type="text" id="nombre_entrega" name="nombre_entrega" class="form-control" required>
+                    <select id="nombre_entrega" name="nombre_entrega" class="form-select" required>
+                        <option value="">Seleccione nombre de quien entrega</option>
+                        {% for persona_entrega in personas_entrega %}
+                            <option value="{{ persona_entrega.Persona_Entrega }}">{{ persona_entrega.Persona_Entrega }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="fecha_entrega" class="form-label">Fecha de entrega:</label>

@@ -224,7 +224,47 @@ def get_discos_tamaño():
     except Exception as e:
         print(f"Error obteniendo discos_tamaño: {e}")
         return []
+    
+def get_perifericos():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
         
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idPerifericos, Periferico FROM perifericos ORDER BY Periferico")
+        perifericos = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(perifericos)} tipos: {perifericos}")
+        return perifericos
+    
+    except Exception as e:
+        print(f"Error obteniendo perifericos: {e}")
+        return []
+        
+def get_personas_entrega():
+    try:
+        connection = conectar()
+        print(f"Conexión establecida: {connection is not None}")
+
+        if connection is None:
+            print("Error: No se pudo establecer conexión con la base de datos")
+            return []
+
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT idPersonas_Entrega, Persona_Entrega FROM personas_entrega ORDER BY Persona_Entrega")
+        personas_entrega = cursor.fetchall()
+
+        print(f"Se obtuvieron {len(personas_entrega)} tipos: {personas_entrega}")
+        return personas_entrega
+
+    except Exception as e:
+        print(f"Error obteniendo personas_entrega: {e}")
+        return []
+
 # =============================================================================
 # FUNCIONES AUXILIARES PARA DOCUMENTOS
 # =============================================================================
@@ -488,6 +528,8 @@ def usuarioti():
     procesadores_equipo = get_procesadores_equipos()
     memorias_ram = get_memorias_ram()
     discos_tamaño = get_discos_tamaño()
+    perifericos = get_perifericos()
+    personas_entrega = get_personas_entrega()
 
     print(f"Cargos obtenidos: {len(cargos)}")
     print(f"Tipos de equipos obtenidos: {len(tipos_equipo)}")
@@ -497,6 +539,8 @@ def usuarioti():
     print(f"Procesadores de equipos obtenidos: {len(procesadores_equipo)}")
     print(f"Memorias RAM obtenidas: {len(memorias_ram)}")
     print(f"Tamaño de discos obtenidos: {len(discos_tamaño)}")
+    print(f"Perifericos obtenidos: {len(perifericos)}")
+    print(f"Personas de entrega obtenidos: {len(personas_entrega)}")
 
     if request.method == 'POST':
         # Extraer datos del formulario
@@ -552,7 +596,7 @@ def usuarioti():
 
     return render_template('usuarioti.html', fecha_actual=fecha_actual, cargos=cargos, tipos_equipo=tipos_equipo, marcas_equipo=marcas_equipo, 
                            modelos_equipo=modelos_equipo, sistemas_operativo=sistemas_operativo, procesadores_equipo=procesadores_equipo,
-                           memorias_ram=memorias_ram, discos_tamaño=discos_tamaño)
+                           memorias_ram=memorias_ram, discos_tamaño=discos_tamaño, perifericos=perifericos, personas_entrega=personas_entrega)
 
 # =============================================================================
 # FUNCIONES DE GENERACIÓN DE DOCUMENTO WORD
