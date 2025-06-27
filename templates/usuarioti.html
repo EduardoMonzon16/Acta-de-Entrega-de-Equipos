@@ -102,8 +102,8 @@
                     <label for="disco" class="form-label">Disco (GB):</label>
                     <select id="disco" name="disco" class="form-select" required>
                         <option value="">Seleccione tamaño de disco</option>
-                        {% for disco_tamaño in discos_tamaño %}
-                            <option value="{{ disco_tamaño.Disco_Tamaño }}">{{ disco_tamaño.Disco_Tamaño }}</option>
+                        {% for disco_tamano in discos_tamano %}
+                            <option value="{{ disco_tamano.Disco_Tamano }}">{{ disco_tamano.Disco_Tamano }}</option>
                         {% endfor %}
                     </select>
                 </div>

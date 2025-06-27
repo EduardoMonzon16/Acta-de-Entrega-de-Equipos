@@ -205,7 +205,7 @@ def get_memorias_ram():
         print(f"Error obteniendo memorias_ram: {e}")
         return []
     
-def get_discos_tamaño():
+def get_discos_tamano():
     try:
         connection = conectar()
         print(f"Conexión establecida: {connection is not None}")
@@ -215,11 +215,11 @@ def get_discos_tamaño():
             return []
         
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT idDiscos_Tamaño, Disco_Tamaño FROM discos_tamaño ORDER BY Disco_Tamaño")
-        discos_tamaño = cursor.fetchall()
+        cursor.execute("SELECT idDiscos_Tamano, Disco_Tamano FROM discos_tamano ORDER BY Disco_Tamano")
+        discos_tamano = cursor.fetchall()
 
-        print(f"Se obtuvieron {len(discos_tamaño)} tipos: {discos_tamaño}")
-        return discos_tamaño
+        print(f"Se obtuvieron {len(discos_tamano)} tipos: {discos_tamano}")
+        return discos_tamano
     
     except Exception as e:
         print(f"Error obteniendo discos_tamaño: {e}")
@@ -527,7 +527,7 @@ def usuarioti():
     sistemas_operativo = get_sistemas_operativos()
     procesadores_equipo = get_procesadores_equipos()
     memorias_ram = get_memorias_ram()
-    discos_tamaño = get_discos_tamaño()
+    discos_tamano = get_discos_tamano()
     perifericos = get_perifericos()
     personas_entrega = get_personas_entrega()
 
@@ -538,7 +538,7 @@ def usuarioti():
     print(f"Sistemas operativos obtenidos: {len(sistemas_operativo)}")
     print(f"Procesadores de equipos obtenidos: {len(procesadores_equipo)}")
     print(f"Memorias RAM obtenidas: {len(memorias_ram)}")
-    print(f"Tamaño de discos obtenidos: {len(discos_tamaño)}")
+    print(f"Tamaño de discos obtenidos: {len(discos_tamano)}")
     print(f"Perifericos obtenidos: {len(perifericos)}")
     print(f"Personas de entrega obtenidos: {len(personas_entrega)}")
 
@@ -596,7 +596,7 @@ def usuarioti():
 
     return render_template('usuarioti.html', fecha_actual=fecha_actual, cargos=cargos, tipos_equipo=tipos_equipo, marcas_equipo=marcas_equipo, 
                            modelos_equipo=modelos_equipo, sistemas_operativo=sistemas_operativo, procesadores_equipo=procesadores_equipo,
-                           memorias_ram=memorias_ram, discos_tamaño=discos_tamaño, perifericos=perifericos, personas_entrega=personas_entrega)
+                           memorias_ram=memorias_ram, discos_tamano=discos_tamano, perifericos=perifericos, personas_entrega=personas_entrega)
 
 # =============================================================================
 # FUNCIONES DE GENERACIÓN DE DOCUMENTO WORD
