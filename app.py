@@ -900,8 +900,8 @@ def crear_tabla_historial_eventos(doc, historial_eventos):
 
     doc.add_paragraph("")
 
-def crear_tabla_mantenimiento_hardware(doc, request):
-    """Crea la tabla de mantenimiento de hardware"""
+def crear_tabla_mantenimiento_hardware(doc, mantenimiento_data):
+    """Crea la tabla de mantenimiento de hardware usando mantenimiento_data"""
     tabla_hardware = doc.add_table(rows=17, cols=3)
     tabla_hardware.style = 'Table Grid'
     tabla_hardware.allow_autofit = False
@@ -934,24 +934,24 @@ def crear_tabla_mantenimiento_hardware(doc, request):
         run = celda.paragraphs[0].runs[0]
         run.bold = True
 
-    # Datos
+    # Datos usando mantenimiento_data
     for i, (texto_pregunta, clave) in enumerate(PREGUNTAS_HARDWARE, start=2):
         tabla_hardware.cell(i, 0).text = texto_pregunta
         sombrear_celda(tabla_hardware.cell(i, 0))
         aplicar_fuente_celda(tabla_hardware.cell(i, 0))
 
-        valor_sn = request.form.get(f"{clave}_sn", "false")
-        texto_sn = "Sí" if valor_sn.lower() == "true" else "No"
+        # Usar mantenimiento_data en lugar de request.form
+        datos_campo = mantenimiento_data.get(clave, {"estado": False, "detalle": ""})
+        texto_sn = "Sí" if datos_campo["estado"] else "No"
         tabla_hardware.cell(i, 1).text = texto_sn
         aplicar_fuente_celda(tabla_hardware.cell(i, 1))
 
-        detalle = request.form.get(f"{clave}_detalle", "")
-        tabla_hardware.cell(i, 2).text = detalle
+        tabla_hardware.cell(i, 2).text = datos_campo["detalle"]
         aplicar_fuente_celda(tabla_hardware.cell(i, 2))
 
     doc.add_paragraph("")
 
-def crear_tabla_mantenimiento_software(doc, request):
+def crear_tabla_mantenimiento_software(doc, mantenimiento_data, request):
     """Crea la tabla de mantenimiento de software"""
     tabla_software = doc.add_table(rows=10, cols=3)
     tabla_software.style = 'Table Grid'
@@ -985,7 +985,7 @@ def crear_tabla_mantenimiento_software(doc, request):
         run = celda.paragraphs[0].runs[0]
         run.bold = True
 
-    # Datos
+    # Datos - usar request directamente porque software no está en mantenimiento_data
     for i, (pregunta, clave) in enumerate(PREGUNTAS_SOFTWARE, start=2):
         tabla_software.cell(i, 0).text = pregunta
         sombrear_celda(tabla_software.cell(i, 0))
@@ -1083,8 +1083,8 @@ def generar_documento_word(datos_colaborador, datos_hardware, datos_equipo, dato
     crear_tabla_datos_equipo(doc, datos_equipo)
     crear_tabla_historial_usuarios(doc, historial_usuarios)
     crear_tabla_historial_eventos(doc, historial_eventos)
-    crear_tabla_mantenimiento_hardware(doc, request)
-    crear_tabla_mantenimiento_software(doc, request)
+    crear_tabla_mantenimiento_hardware(doc, mantenimiento_data)  # ← Ahora usa mantenimiento_data
+    crear_tabla_mantenimiento_software(doc, mantenimiento_data, request)  # ← Pasa ambos parámetros
     crear_tabla_programas_area(doc)
 
     # Guardar en memoria
